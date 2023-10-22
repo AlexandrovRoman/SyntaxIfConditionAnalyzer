@@ -15,7 +15,6 @@ class SyntaxAnalyzerApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def _mark_err_literal(self, position):
         self.textEdit.setFocus()
         cursor = self.textEdit.textCursor()
-        print(position)
         cursor.movePosition(cursor.Start, cursor.KeepAnchor)
         cursor.movePosition(cursor.Right, cursor.KeepAnchor, position)
         cursor.clearSelection()

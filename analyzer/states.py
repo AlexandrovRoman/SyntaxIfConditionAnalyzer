@@ -208,6 +208,7 @@ class I3(IdentifierAnalyzer):
             self.semantic_data.save_cur_identifier()
             return G6(self.input_str, self.cur_pos+1, self.semantic_data)
         if s == ';':
+            self.semantic_data.save_cur_identifier()
             return F(self.input_str, self.cur_pos+1, self.semantic_data)
         return super().syntax_analyze()
 
@@ -246,6 +247,7 @@ class N3(NumberAnalyzer):
             self.semantic_data.save_cur_constant()
             return G6(self.input_str, self.cur_pos+1, self.semantic_data)
         if s == ';':
+            self.semantic_data.save_cur_constant()
             return F(self.input_str, self.cur_pos+1, self.semantic_data)
         return super().syntax_analyze()
 
@@ -304,7 +306,7 @@ class G8(LoopSpace):
         s = self.relative_str
         if s == ':=':
             self.semantic_data.current_identifier = s
-            return W2(self.input_str, self.cur_pos+2, self.semantic_data)
+            return W4(self.input_str, self.cur_pos+2, self.semantic_data)
         return super().syntax_analyze()
 
 
@@ -337,6 +339,7 @@ class I5(IdentifierAnalyzer):
             self.semantic_data.save_cur_identifier()
             return G9(self.input_str, self.cur_pos+1, self.semantic_data)
         if s == ';':
+            self.semantic_data.save_cur_identifier()
             return F(self.input_str, self.cur_pos+1, self.semantic_data)
         return super().syntax_analyze()
 
@@ -375,6 +378,7 @@ class N5(NumberAnalyzer):
             self.semantic_data.save_cur_constant()
             return G9(self.input_str, self.cur_pos+1, self.semantic_data)
         if s == ';':
+            self.semantic_data.save_cur_constant()
             return F(self.input_str, self.cur_pos+1, self.semantic_data)
         return super().syntax_analyze()
 

@@ -36,7 +36,7 @@ class BaseStateAnalyzer(ABC):
                                        position=self.cur_pos-len(self.semantic_data.current_constant))
 
     @abstractmethod
-    def syntax_analyze(self):
+    def syntax_analyze(self) -> 'BaseStateAnalyzer':
         pass
 
     def analyze(self):
