@@ -154,7 +154,7 @@ class G4(LoopSpace):
 class I2(IdentifierAnalyzer):
     max_output_literal_len = 2
 
-    error_message = 'Ожидается цифра, буква, пробел или знак сравнения'
+    error_message = 'Ожидается цифра, буква, пробел или :='
 
     def syntax_analyze(self):
         s = self.relative_str
@@ -169,7 +169,7 @@ class I2(IdentifierAnalyzer):
 
 class G5(LoopSpace):
     max_output_literal_len = 2
-    error_message = 'Ожидается пробел или знак присвоения'
+    error_message = 'Ожидается пробел или :='
 
     def syntax_analyze(self):
         s = self.relative_str
@@ -285,7 +285,7 @@ class G7(LoopSpace):
 class I4(IdentifierAnalyzer):
     max_output_literal_len = 2
 
-    error_message = 'Ожидается цифра, буква, пробел или знак сравнения'
+    error_message = 'Ожидается цифра, буква, пробел или :='
 
     def syntax_analyze(self):
         s = self.relative_str
@@ -300,7 +300,7 @@ class I4(IdentifierAnalyzer):
 
 class G8(LoopSpace):
     max_output_literal_len = 2
-    error_message = 'Ожидается пробел или знак присвоения'
+    error_message = 'Ожидается пробел или :='
 
     def syntax_analyze(self):
         s = self.relative_str

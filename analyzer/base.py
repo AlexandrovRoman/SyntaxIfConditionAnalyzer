@@ -22,18 +22,29 @@ class BaseStateAnalyzer(ABC):
             raise SyntaxAnalyzeError('Строка закончилась без достижения финального состояния', position=self.cur_pos)
         return s
 
-    def semantic_analyze(self):
-        for identifier in self.semantic_data.identifiers:
-            if identifier.lower() in KEYWORDS:
-                raise SemanticAnalyzeError(f'{identifier} является зарезервированным словом',
-                                           position=self.cur_pos-len(identifier))
-        try:
-            const = int(self.semantic_data.current_constant)
-        except (ValueError, TypeError):
+    def _semantic_analyze_identifiers(self):
+        if not self.semantic_data.identifiers:
             return
+        identifier = self.semantic_data.identifiers[-1]
+        if identifier.lower() in KEYWORDS:
+            raise SemanticAnalyzeError(f'{identifier} является зарезервированным словом',
+                                       position=self.cur_pos - len(identifier))
+        if len(identifier) > 8:
+            raise SemanticAnalyzeError(f'{identifier} '
+                                       f'слишком длинное название идентификатора',
+                                       position=self.cur_pos - len(identifier))
+
+    def _semantic_analyze_constants(self):
+        if not self.semantic_data.constants:
+            return
+        const = self.semantic_data.constants[-1]
         if const not in ALLOWED_CONSTANT_RANGE:
             raise SemanticAnalyzeError(f'{const} выходит за допустимый предел чисел',
-                                       position=self.cur_pos-len(self.semantic_data.current_constant))
+                                       position=self.cur_pos - len(str(const)))
+
+    def semantic_analyze(self):
+        self._semantic_analyze_identifiers()
+        self._semantic_analyze_constants()
 
     @abstractmethod
     def syntax_analyze(self) -> 'BaseStateAnalyzer':
@@ -45,7 +56,7 @@ class BaseStateAnalyzer(ABC):
         if not next_state:
             raise AnalyzeError('Функция - анализатор не вернула следующее состояние и не вызвала ошибку',
                                position=self.cur_pos)
-        return next_state.analyze()
+        return next_state
 
 
 class SimpleSpaceTransfer(BaseStateAnalyzer):
@@ -54,7 +65,7 @@ class SimpleSpaceTransfer(BaseStateAnalyzer):
     def syntax_analyze(self):
         s = self.relative_str[0]
         if s == ' ':
-            return self.next_state(self.input_str, self.cur_pos+1, self.semantic_data)
+            return self.next_state(self.input_str, self.cur_pos + 1, self.semantic_data)
         raise SyntaxAnalyzeError('Ожидается пробел', position=self.cur_pos)
 
 
@@ -64,7 +75,7 @@ class LoopSpace(BaseStateAnalyzer):
     def syntax_analyze(self):
         s = self.relative_str[0]
         if s == ' ':
-            return self.__class__(self.input_str, self.cur_pos+1, self.semantic_data)
+            return self.__class__(self.input_str, self.cur_pos + 1, self.semantic_data)
         raise SyntaxAnalyzeError(self.error_message, position=self.cur_pos)
 
 
@@ -75,7 +86,7 @@ class IdentifierAnalyzer(BaseStateAnalyzer):
         s = self.relative_str[0]
         if s.isalnum():
             self.semantic_data.current_identifier += s
-            return self.__class__(self.input_str, self.cur_pos+1, self.semantic_data)
+            return self.__class__(self.input_str, self.cur_pos + 1, self.semantic_data)
         raise SyntaxAnalyzeError(self.error_message, position=self.cur_pos)
 
 

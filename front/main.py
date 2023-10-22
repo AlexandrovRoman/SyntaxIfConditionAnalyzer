@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets
 
+from analyzer import analyze
 from front.main_window import Ui_MainWindow
 from analyzer.states import Start, F
 from analyzer.exceptions import SyntaxAnalyzeError, SemanticAnalyzeError
@@ -23,7 +24,7 @@ class SyntaxAnalyzerApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def syntax_analyze(self):
         input_str = self.textEdit.toPlainText()
         try:
-            Start(input_str).analyze()
+            analyze(input_str)
         except SyntaxAnalyzeError as ex:
             self.errorsLabel.setText(f'Синтаксическая ошибка в {ex.position} символе. {ex}')
             self.errorsLabel.setStyleSheet("color: red")
@@ -41,7 +42,7 @@ class SyntaxAnalyzerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.constantsList.clear()
         input_str = self.textEdit.toPlainText()
         try:
-            final_state: F = Start(input_str).analyze()
+            final_state: F = analyze(input_str)
         except (SyntaxAnalyzeError, SemanticAnalyzeError):
             pass
         else:

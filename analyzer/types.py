@@ -6,8 +6,8 @@ from typing import Optional
 class SemanticData:
     identifiers: list[str]
     constants: list[int]
-    current_identifier: Optional[str]
-    current_constant: Optional[str]
+    current_identifier: Optional[str] = None
+    current_constant: Optional[str] = None
 
     def save_cur_identifier(self):
         if self.current_identifier and self.current_identifier not in self.identifiers:
