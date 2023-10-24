@@ -1,2 +1,3 @@
 KEYWORDS = ['if', 'then', 'else']
+MAX_IDENTIFIER_LEN = 8
 ALLOWED_CONSTANT_RANGE = range(-32768, 32768)

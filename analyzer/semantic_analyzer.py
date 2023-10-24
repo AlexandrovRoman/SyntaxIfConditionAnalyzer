@@ -1,4 +1,4 @@
-from analyzer.config import KEYWORDS, ALLOWED_CONSTANT_RANGE
+from analyzer.config import KEYWORDS, ALLOWED_CONSTANT_RANGE, MAX_IDENTIFIER_LEN
 from analyzer.exceptions import SemanticAnalyzeError
 from analyzer.types import Identifier, Constant, SemanticData
 
@@ -7,7 +7,7 @@ def _semantic_analyze_identifier(identifier: Identifier):
     if identifier.value.lower() in KEYWORDS:
         raise SemanticAnalyzeError(f'{identifier} является зарезервированным словом',
                                    position=identifier.start_pos)
-    if len(identifier.value) > 8:
+    if len(identifier.value) > MAX_IDENTIFIER_LEN:
         raise SemanticAnalyzeError(f'{identifier} '
                                    f'слишком длинное название идентификатора',
                                    position=identifier.start_pos)
