@@ -1,5 +1,6 @@
 from analyzer.base import BaseStateAnalyzer, SimpleSpaceTransfer, LoopSpace, IdentifierAnalyzer, NumberAnalyzer
 from analyzer.exceptions import SyntaxAnalyzeError
+from analyzer.types import Identifier, Constant
 
 
 class Start(LoopSpace):
@@ -26,7 +27,7 @@ class G1(LoopSpace):
     def syntax_analyze(self):
         s = self.relative_str
         if s.isalpha():
-            self.semantic_data.current_identifier = s
+            self.semantic_data.current_identifier = Identifier(self.cur_pos, s)
             return I0(self.input_str, self.cur_pos+1, self.semantic_data)
         return super().syntax_analyze()
 
@@ -65,16 +66,16 @@ class C1(LoopSpace):
     def syntax_analyze(self):
         s = self.relative_str
         if s.isalpha():
-            self.semantic_data.current_identifier = s
+            self.semantic_data.current_identifier = Identifier(self.cur_pos, s)
             return I1(self.input_str, self.cur_pos + 1, self.semantic_data)
         if s == '0':
-            self.semantic_data.current_constant = s
+            self.semantic_data.current_constant = Constant(self.cur_pos, s)
             return N0(self.input_str, self.cur_pos + 1, self.semantic_data)
         if s in ('+', '-'):
-            self.semantic_data.current_constant = s
+            self.semantic_data.current_constant = Constant(self.cur_pos, s)
             return Z1(self.input_str, self.cur_pos + 1, self.semantic_data)
         if s.isdigit():
-            self.semantic_data.current_constant = s
+            self.semantic_data.current_constant = Constant(self.cur_pos, s)
             return N1(self.input_str, self.cur_pos + 1, self.semantic_data)
         return super().syntax_analyze()
 
@@ -146,7 +147,7 @@ class G4(LoopSpace):
     def syntax_analyze(self):
         s = self.relative_str
         if s.isalpha():
-            self.semantic_data.current_identifier = s
+            self.semantic_data.current_identifier = Identifier(self.cur_pos, s)
             return I2(self.input_str, self.cur_pos+1, self.semantic_data)
         return super().syntax_analyze()
 
@@ -174,7 +175,7 @@ class G5(LoopSpace):
     def syntax_analyze(self):
         s = self.relative_str
         if s == ':=':
-            self.semantic_data.current_identifier = s
+            self.semantic_data.current_identifier = Identifier(self.cur_pos, s)
             return W2(self.input_str, self.cur_pos+2, self.semantic_data)
         return super().syntax_analyze()
 
@@ -185,16 +186,16 @@ class W2(LoopSpace):
     def syntax_analyze(self):
         s = self.relative_str
         if s.isalpha():
-            self.semantic_data.current_identifier = s
+            self.semantic_data.current_identifier = Identifier(self.cur_pos, s)
             return I3(self.input_str, self.cur_pos + 1, self.semantic_data)
         if s == '0':
-            self.semantic_data.current_constant = s
+            self.semantic_data.current_constant = Constant(self.cur_pos, s)
             return N2(self.input_str, self.cur_pos + 1, self.semantic_data)
         if s in ('+', '-'):
-            self.semantic_data.current_constant = s
+            self.semantic_data.current_constant = Constant(self.cur_pos, s)
             return Z2(self.input_str, self.cur_pos + 1, self.semantic_data)
         if s.isdigit():
-            self.semantic_data.current_constant = s
+            self.semantic_data.current_constant = Constant(self.cur_pos, s)
             return N3(self.input_str, self.cur_pos + 1, self.semantic_data)
         return super().syntax_analyze()
 
@@ -217,10 +218,10 @@ class Z2(BaseStateAnalyzer):
     def syntax_analyze(self):
         s = self.relative_str
         if s == '0':
-            self.semantic_data.current_constant = s
+            self.semantic_data.current_constant = Constant(self.cur_pos, s)
             return N2(self.input_str, self.cur_pos+1, self.semantic_data)
         if s.isdigit():
-            self.semantic_data.current_constant = s
+            self.semantic_data.current_constant = Constant(self.cur_pos, s)
             return N3(self.input_str, self.cur_pos+1, self.semantic_data)
         raise SyntaxAnalyzeError('Ожидается цифра', position=self.cur_pos)
 
@@ -277,7 +278,7 @@ class G7(LoopSpace):
     def syntax_analyze(self):
         s = self.relative_str
         if s.isalpha():
-            self.semantic_data.current_identifier = s
+            self.semantic_data.current_identifier = Identifier(self.cur_pos, s)
             return I4(self.input_str, self.cur_pos+1, self.semantic_data)
         return super().syntax_analyze()
 
@@ -305,7 +306,7 @@ class G8(LoopSpace):
     def syntax_analyze(self):
         s = self.relative_str
         if s == ':=':
-            self.semantic_data.current_identifier = s
+            self.semantic_data.current_identifier = Identifier(self.cur_pos, s)
             return W4(self.input_str, self.cur_pos+2, self.semantic_data)
         return super().syntax_analyze()
 
@@ -316,16 +317,16 @@ class W4(LoopSpace):
     def syntax_analyze(self):
         s = self.relative_str
         if s.isalpha():
-            self.semantic_data.current_identifier = s
+            self.semantic_data.current_identifier = Identifier(self.cur_pos, s)
             return I5(self.input_str, self.cur_pos + 1, self.semantic_data)
         if s == '0':
-            self.semantic_data.current_constant = s
+            self.semantic_data.current_constant = Constant(self.cur_pos, s)
             return N4(self.input_str, self.cur_pos + 1, self.semantic_data)
         if s in ('+', '-'):
-            self.semantic_data.current_constant = s
+            self.semantic_data.current_constant = Constant(self.cur_pos, s)
             return Z3(self.input_str, self.cur_pos + 1, self.semantic_data)
         if s.isdigit():
-            self.semantic_data.current_constant = s
+            self.semantic_data.current_constant = Constant(self.cur_pos, s)
             return N5(self.input_str, self.cur_pos + 1, self.semantic_data)
         return super().syntax_analyze()
 
@@ -351,7 +352,7 @@ class Z3(BaseStateAnalyzer):
             self.semantic_data.current_constant += s
             return N4(self.input_str, self.cur_pos+1, self.semantic_data)
         if s.isdigit():
-            self.semantic_data.current_constant = s
+            self.semantic_data.current_constant = Constant(self.cur_pos, s)
             return N5(self.input_str, self.cur_pos+1, self.semantic_data)
         raise SyntaxAnalyzeError('Ожидается цифра', position=self.cur_pos)
 
@@ -399,6 +400,5 @@ class F(BaseStateAnalyzer):
             raise SyntaxAnalyzeError('Достигнуто конечное состояние до конца строки', position=self.cur_pos)
 
     def analyze(self):
-        self.semantic_analyze()
         self.syntax_analyze()
         return self

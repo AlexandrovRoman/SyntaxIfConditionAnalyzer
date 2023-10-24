@@ -10,7 +10,7 @@ class BaseStateAnalyzer(ABC):
 
     def __init__(self, input_str: str, cur_pos: int = 0, semantic_data: SemanticData = None):
         if not semantic_data:
-            semantic_data = SemanticData([], [], None, None)
+            semantic_data = SemanticData([], [])
         self.input_str = input_str
         self.cur_pos = cur_pos
         self.semantic_data = semantic_data
@@ -22,36 +22,11 @@ class BaseStateAnalyzer(ABC):
             raise SyntaxAnalyzeError('Строка закончилась без достижения финального состояния', position=self.cur_pos)
         return s
 
-    def _semantic_analyze_identifiers(self):
-        if not self.semantic_data.identifiers:
-            return
-        identifier = self.semantic_data.identifiers[-1]
-        if identifier.lower() in KEYWORDS:
-            raise SemanticAnalyzeError(f'{identifier} является зарезервированным словом',
-                                       position=self.cur_pos - len(identifier))
-        if len(identifier) > 8:
-            raise SemanticAnalyzeError(f'{identifier} '
-                                       f'слишком длинное название идентификатора',
-                                       position=self.cur_pos - len(identifier))
-
-    def _semantic_analyze_constants(self):
-        if not self.semantic_data.constants:
-            return
-        const = self.semantic_data.constants[-1]
-        if const not in ALLOWED_CONSTANT_RANGE:
-            raise SemanticAnalyzeError(f'{const} выходит за допустимый предел чисел',
-                                       position=self.cur_pos - len(str(const)))
-
-    def semantic_analyze(self):
-        self._semantic_analyze_identifiers()
-        self._semantic_analyze_constants()
-
     @abstractmethod
     def syntax_analyze(self) -> 'BaseStateAnalyzer':
         pass
 
     def analyze(self):
-        self.semantic_analyze()
         next_state = self.syntax_analyze()
         if not next_state:
             raise AnalyzeError('Функция - анализатор не вернула следующее состояние и не вызвала ошибку',
