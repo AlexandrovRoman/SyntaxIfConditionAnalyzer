@@ -49,3 +49,4 @@ class SyntaxAnalyzerApp(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.identifiersList.addItem(identifier.value)
             for const in semantic_data.constants:
                 self.constantsList.addItem(str(const))
+
