@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional
 
+from analyzer.semantic_analyzer import semantic_analyze_identifier, semantic_analyze_constant
+
 
 @dataclass
 class Identifier:
@@ -40,13 +42,15 @@ class SemanticData:
     current_constant: Optional[Constant] = None
 
     def save_cur_identifier(self):
-        if self.current_identifier and not any(self.current_identifier.value == identifier
+        if self.current_identifier and not any(self.current_identifier.value == identifier.value
                                                for identifier in self.identifiers):
+            semantic_analyze_identifier(self.current_identifier)
             self.identifiers.append(self.current_identifier)
         self.current_identifier = None
 
     def save_cur_constant(self):
-        if self.current_constant and not any(self.current_constant.value == constant
+        if self.current_constant and not any(self.current_constant.value == constant.value
                                              for constant in self.constants):
+            semantic_analyze_constant(self.current_constant)
             self.constants.append(self.current_constant)
         self.current_constant = None

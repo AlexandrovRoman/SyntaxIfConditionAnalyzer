@@ -13,15 +13,13 @@ test_data = [
         [Identifier(4, 'E8c'),
          Identifier(20, 'A1'),
          Identifier(24, 'ABC'),
-         Identifier(34, 'A1'),
          Identifier(40, 'BCD')], [Constant(8, '+314')]
     )
      ),
     ('IF  E=-314  THEN  A1:=ABC  ELSE A1:=0;', SemanticData(
         [Identifier(4, 'E'),
          Identifier(18, 'A1'),
-         Identifier(22, 'ABC'),
-         Identifier(32, 'A1')],
+         Identifier(22, 'ABC')],
         [Constant(6, '-314'), Constant(36, '0')]
     )
      ),

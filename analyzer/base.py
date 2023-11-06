@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 
-from analyzer.config import KEYWORDS, ALLOWED_CONSTANT_RANGE
-from analyzer.exceptions import SyntaxAnalyzeError, SemanticAnalyzeError, AnalyzeError
+from analyzer.exceptions import SyntaxAnalyzeError, AnalyzeError
 from analyzer.types import SemanticData
 
 

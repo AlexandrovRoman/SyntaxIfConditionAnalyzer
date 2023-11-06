@@ -4,21 +4,15 @@ from analyzer.types import Identifier, Constant
 
 
 class Start(LoopSpace):
-    max_output_literal_len = 2
+    max_output_literal_len = 3
     min_output_literal_len = 1
     error_message = 'Ожидается if или пробел'
 
     def syntax_analyze(self):
         s = self.relative_str
-        if s.lower() == 'if':
-            return W0(self.input_str, self.cur_pos+2, self.semantic_data)
+        if s.lower() == 'if ':
+            return G1(self.input_str, self.cur_pos+3, self.semantic_data)
         return super().syntax_analyze()
-
-
-class W0(SimpleSpaceTransfer):
-    @property
-    def next_state(self):
-        return G1
 
 
 class G1(LoopSpace):
@@ -47,7 +41,7 @@ class I0(IdentifierAnalyzer):
 
 
 class G2(LoopSpace):
-    max_output_literal_len = 4
+    max_output_literal_len = 5
     error_message = 'Ожидается пробел, знак сравнения или then'
 
     def syntax_analyze(self):
@@ -55,8 +49,8 @@ class G2(LoopSpace):
         if s[0] in ('<', '>', '='):
             self.semantic_data.save_cur_identifier()
             return C1(self.input_str, self.cur_pos + 1, self.semantic_data)
-        if s.lower() == 'then':
-            return W1(self.input_str, self.cur_pos + 4, self.semantic_data)
+        if s.lower() == 'then ':
+            return G4(self.input_str, self.cur_pos+5, self.semantic_data)
         return super().syntax_analyze()
 
 
@@ -125,20 +119,14 @@ class N1(NumberAnalyzer):
 
 
 class G3(LoopSpace):
-    max_output_literal_len = 4
+    max_output_literal_len = 5
     error_message = 'Ожидается пробел или then'
 
     def syntax_analyze(self):
         s = self.relative_str
-        if s.lower() == 'then':
-            return W1(self.input_str, self.cur_pos+4, self.semantic_data)
+        if s.lower() == 'then ':
+            return G4(self.input_str, self.cur_pos+5, self.semantic_data)
         return super().syntax_analyze()
-
-
-class W1(SimpleSpaceTransfer):
-    @property
-    def next_state(self):
-        return G4
 
 
 class G4(LoopSpace):
@@ -254,22 +242,16 @@ class N3(NumberAnalyzer):
 
 
 class G6(LoopSpace):
-    max_output_literal_len = 4
+    max_output_literal_len = 5
     error_message = 'Ожидается пробел, else или ;'
 
     def syntax_analyze(self):
         s = self.relative_str
         if s[0] == ';':
             return F(self.input_str, self.cur_pos+1, self.semantic_data)
-        if s.lower() == 'else':
-            return W3(self.input_str, self.cur_pos+4, self.semantic_data)
+        if s.lower() == 'else ':
+            return G7(self.input_str, self.cur_pos+5, self.semantic_data)
         return super().syntax_analyze()
-
-
-class W3(SimpleSpaceTransfer):
-    @property
-    def next_state(self):
-        return G7
 
 
 class G7(LoopSpace):
