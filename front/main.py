@@ -29,11 +29,11 @@ class SyntaxAnalyzerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         try:
             analyze(input_str)
         except SyntaxAnalyzeError as ex:
-            self.errorsLabel.setText(f'Синтаксическая ошибка в {ex.position} символе. {ex}')
+            self.errorsLabel.setText(f'Синтаксическая ошибка в {ex.position+1} символе. {ex}')
             self.errorsLabel.setStyleSheet("color: red")
             self._mark_err_literal(ex.position)
         except SemanticAnalyzeError as ex:
-            self.errorsLabel.setText(f'Семантическая ошибка в {ex.position} символе. {ex}')
+            self.errorsLabel.setText(f'Семантическая ошибка в {ex.position+1} символе. {ex}')
             self.errorsLabel.setStyleSheet("color: red")
             self._mark_err_literal(ex.position)
         else:
