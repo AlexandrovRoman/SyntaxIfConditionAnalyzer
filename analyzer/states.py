@@ -3,7 +3,7 @@ from analyzer.exceptions import SyntaxAnalyzeError
 from analyzer.types import Identifier, Constant
 
 
-class Start(LoopSpace):
+class S(LoopSpace):
     max_output_literal_len = 3
     min_output_literal_len = 1
     error_message = 'Ожидается if или пробел'

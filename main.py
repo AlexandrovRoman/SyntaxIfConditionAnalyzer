@@ -4,6 +4,8 @@ from front.main import SyntaxAnalyzerApp
 
 
 def main():
+    """ Запуск графического окна """
+
     app = QtWidgets.QApplication(sys.argv)  # Новый экземпляр QApplication
     window = SyntaxAnalyzerApp()  # Создаём объект класса ExampleApp
     window.show()  # Показываем окно

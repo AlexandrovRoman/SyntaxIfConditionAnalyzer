@@ -6,6 +6,8 @@ from analyzer.semantic_analyzer import semantic_analyze_identifier, semantic_ana
 
 @dataclass
 class Identifier:
+    """ Тип идентификатора. Нужен для сохранения его позиции """
+
     start_pos: int
     value: str
 
@@ -19,6 +21,8 @@ class Identifier:
 
 @dataclass
 class Constant:
+    """ Тип идентификатора. Нужен для сохранения его позиции и знака """
+
     start_pos: int
     _value: str
 

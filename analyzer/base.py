@@ -5,6 +5,8 @@ from analyzer.types import SemanticData
 
 
 class BaseStateAnalyzer(ABC):
+    """ Базовый класс состояния """
+
     max_output_literal_len = min_output_literal_len = 1
 
     def __init__(self, input_str: str, cur_pos: int = 0, semantic_data: SemanticData = None):
@@ -16,6 +18,7 @@ class BaseStateAnalyzer(ABC):
 
     @property
     def relative_str(self) -> str:
+        """ Срез строки с текущей позиции на длину max_output_literal_len, с проверкой на окончание строки """
         s = self.input_str[self.cur_pos:self.cur_pos + self.max_output_literal_len]
         if len(s) < self.min_output_literal_len:
             raise SyntaxAnalyzeError('Строка закончилась без достижения финального состояния', position=self.cur_pos)
@@ -23,9 +26,11 @@ class BaseStateAnalyzer(ABC):
 
     @abstractmethod
     def syntax_analyze(self) -> 'BaseStateAnalyzer':
-        pass
+        """ Возвращает следующее состояние. Если не получилось его определить - вызывает синтаксическую ошибку """
 
     def analyze(self):
+        """ Получает следующее состояние. Если вернулось None и не вызвалась ошибка - вызываем её """
+
         next_state = self.syntax_analyze()
         if not next_state:
             raise AnalyzeError('Функция - анализатор не вернула следующее состояние и не вызвала ошибку',
@@ -34,6 +39,8 @@ class BaseStateAnalyzer(ABC):
 
 
 class SimpleSpaceTransfer(BaseStateAnalyzer):
+    """ Универсальный класс для перехода через пробел в следующее состояние """
+
     next_state = BaseStateAnalyzer
 
     def syntax_analyze(self):
@@ -44,6 +51,8 @@ class SimpleSpaceTransfer(BaseStateAnalyzer):
 
 
 class LoopSpace(BaseStateAnalyzer):
+    """ Универсальный класс для состояний, в которых возможно любое количество пробелов """
+
     error_message = 'Ожидается пробел'
 
     def syntax_analyze(self):
@@ -54,6 +63,8 @@ class LoopSpace(BaseStateAnalyzer):
 
 
 class IdentifierAnalyzer(BaseStateAnalyzer):
+    """ Универсальный класс для набора идентификатора """
+
     error_message = 'Ожидается цифра или буква'
 
     def syntax_analyze(self):
@@ -65,6 +76,8 @@ class IdentifierAnalyzer(BaseStateAnalyzer):
 
 
 class NumberAnalyzer(BaseStateAnalyzer):
+    """ Универсальный класс для набора константы """
+
     error_message = 'Ожидается цифра'
 
     def syntax_analyze(self):

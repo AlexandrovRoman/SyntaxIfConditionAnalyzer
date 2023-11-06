@@ -13,6 +13,8 @@ class SyntaxAnalyzerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.semanticButton.clicked.connect(self.output_semantic)
 
     def _mark_err_literal(self, position):
+        """ Перемещение курсора к месту возникновения ошибки """
+
         self.textEdit.setFocus()
         cursor = self.textEdit.textCursor()
         cursor.movePosition(cursor.Start, cursor.KeepAnchor)
@@ -21,6 +23,8 @@ class SyntaxAnalyzerApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.textEdit.setTextCursor(cursor)
 
     def syntax_analyze(self):
+        """ Обработчик кнопки 'Проанализировать' """
+
         input_str = self.textEdit.toPlainText()
         try:
             analyze(input_str)
@@ -37,6 +41,8 @@ class SyntaxAnalyzerApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.errorsLabel.setStyleSheet("color: green")
 
     def output_semantic(self):
+        """ Обработчик кнопки 'Вывести семантику' """
+
         self.identifiersList.clear()
         self.constantsList.clear()
         input_str = self.textEdit.toPlainText()

@@ -7,6 +7,8 @@ if TYPE_CHECKING:
 
 
 def semantic_analyze_identifier(identifier: 'Identifier'):
+    """ Проверка семантических критериев идентификатора """
+
     if identifier.value.lower() in KEYWORDS:
         raise SemanticAnalyzeError(f'{identifier} является зарезервированным словом',
                                    position=identifier.start_pos)
@@ -17,6 +19,8 @@ def semantic_analyze_identifier(identifier: 'Identifier'):
 
 
 def semantic_analyze_constant(const: 'Constant'):
+    """ Проверка семантических критериев константы """
+
     if const.value not in ALLOWED_CONSTANT_RANGE:
         raise SemanticAnalyzeError(f'{const} выходит за допустимый предел чисел',
                                    position=const.start_pos)
